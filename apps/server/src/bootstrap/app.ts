@@ -1,9 +1,9 @@
 import type { Database } from "@bunmplate/drizzle";
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
-import { authController } from "../features/auth/presentation/authController.ts";
-import { healthController } from "../features/health/presentation/healthController.ts";
-import { postController } from "../features/posts/presentation/postController.ts";
+import { authController } from "../modules/auth/presentation/authController.ts";
+import { healthController } from "../modules/health/presentation/healthController.ts";
+import { postController } from "../modules/posts/presentation/postController.ts";
 import type { IDateProvider } from "../shared/application/dateProvider.port.ts";
 import type { IIdGenerator } from "../shared/application/idGenerator.port.ts";
 import type { ILogger } from "../shared/application/logger.port.ts";
