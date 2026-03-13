@@ -1,7 +1,7 @@
 import type { IDateProvider } from "@server/shared/application/dateProvider.port.ts";
 import { AppError } from "@server/shared/kernel/appError.ts";
-import { unwrap } from "@server/shared/kernel/result.ts";
-import { createTitle } from "../../domain/valueObjects/title.ts";
+import { err, flatMap, ok, type Result } from "@server/shared/kernel/result.ts";
+import { assertAuthor, changeContent, changeTitle } from "../../domain/entities/post.ts";
 import type { PostResponseDto, UpdatePostDto } from "../dtos.ts";
 import { toPostResponse } from "../dtos.ts";
 import type { IPostRepository } from "../ports/postRepository.port.ts";
@@ -16,32 +16,24 @@ export async function updatePost(
   dto: UpdatePostDto,
   userId: string,
   deps: Deps,
-): Promise<PostResponseDto> {
-  const post = await deps.postRepository.findById(id);
-  if (!post) {
-    throw AppError.notFound("Post not found");
-  }
-  if (post.authorId !== userId) {
-    throw AppError.forbidden("You can only update your own posts");
-  }
+): Promise<Result<PostResponseDto, AppError>> {
+  const found = await deps.postRepository.findById(id);
+  if (!found) return err(AppError.notFound("Post not found"));
 
-  const updates: Partial<{ title: string; content: string; updatedAt: Date }> = {
-    updatedAt: deps.dateProvider.now(),
-  };
+  let result = assertAuthor(found, userId);
+  if (!result.ok) return result;
 
+  const now = deps.dateProvider.now();
   if (dto.title !== undefined) {
-    updates.title = unwrap(createTitle(dto.title));
+    const title = dto.title;
+    result = flatMap(result, (p) => changeTitle(p, title, now));
   }
-
   if (dto.content !== undefined) {
-    updates.content = dto.content;
+    const content = dto.content;
+    result = flatMap(result, (p) => changeContent(p, content, now));
   }
+  if (!result.ok) return result;
 
-  await deps.postRepository.update(id, updates);
-
-  return toPostResponse({
-    ...post,
-    ...updates,
-    updatedAt: updates.updatedAt ?? post.updatedAt,
-  });
+  await deps.postRepository.update(result.value);
+  return ok(toPostResponse(result.value));
 }

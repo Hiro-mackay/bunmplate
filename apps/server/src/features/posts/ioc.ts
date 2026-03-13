@@ -1,10 +1,11 @@
 import type { Database } from "@bunmplate/drizzle";
 import type { IDateProvider } from "@server/shared/application/dateProvider.port.ts";
 import type { IIdGenerator } from "@server/shared/application/idGenerator.port.ts";
+import type { IPostRepository } from "./application/ports/postRepository.port.ts";
 import { DrizzlePostRepository } from "./infrastructure/drizzlePostRepository.ts";
 
 export interface PostsDeps {
-  postRepository: InstanceType<typeof DrizzlePostRepository>;
+  postRepository: IPostRepository;
   idGenerator: IIdGenerator;
   dateProvider: IDateProvider;
 }

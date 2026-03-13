@@ -6,6 +6,8 @@ export interface AuthPayload {
   userId: string;
 }
 
+export type AuthGuardPlugin = ReturnType<typeof createAuthGuard>;
+
 export function createAuthGuard(jwtSecret: string) {
   const secret = new TextEncoder().encode(jwtSecret);
 
@@ -20,7 +22,7 @@ export function createAuthGuard(jwtSecret: string) {
       const token = authorization.slice(7);
 
       try {
-        const { payload } = await jwtVerify(token, secret);
+        const { payload } = await jwtVerify(token, secret, { algorithms: ["HS256"] });
         if (typeof payload.sub !== "string") {
           throw AppError.unauthorized("Invalid token payload");
         }

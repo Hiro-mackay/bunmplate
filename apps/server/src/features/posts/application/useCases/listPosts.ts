@@ -6,8 +6,8 @@ interface Deps {
   postRepository: IPostRepository;
 }
 
-const DEFAULT_LIMIT = 20;
-const MAX_LIMIT = 100;
+export const DEFAULT_LIMIT = 20;
+export const MAX_LIMIT = 100;
 
 interface ListPostsResponse {
   data: PostResponseDto[];

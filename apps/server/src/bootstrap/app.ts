@@ -7,8 +7,10 @@ import { postController } from "../features/posts/presentation/postController.ts
 import type { IDateProvider } from "../shared/application/dateProvider.port.ts";
 import type { IIdGenerator } from "../shared/application/idGenerator.port.ts";
 import type { ILogger } from "../shared/application/logger.port.ts";
+import { createAuthGuard } from "../shared/plugin/authGuard.ts";
 import { createErrorPlugin } from "../shared/plugin/errorPlugin.ts";
 import { requestIdPlugin } from "../shared/plugin/requestIdPlugin.ts";
+import { securityHeadersPlugin } from "../shared/plugin/securityHeadersPlugin.ts";
 import { createTransactionPlugin } from "../shared/plugin/transactionPlugin.ts";
 
 interface AppDeps {
@@ -22,19 +24,27 @@ interface AppDeps {
 
 export function createApp(deps: AppDeps) {
   const txPlugin = createTransactionPlugin(deps.db);
+  const authGuardPlugin = createAuthGuard(deps.jwtSecret);
   const sharedConfig = {
-    jwtSecret: deps.jwtSecret,
     idGenerator: deps.idGenerator,
     dateProvider: deps.dateProvider,
   };
 
   return new Elysia()
-    .use(cors({ origin: deps.corsOrigin }))
+    .use(
+      cors({
+        origin: deps.corsOrigin,
+        credentials: true,
+        allowedHeaders: ["Content-Type", "Authorization"],
+        methods: ["GET", "POST", "PATCH", "DELETE"],
+      }),
+    )
+    .use(securityHeadersPlugin)
     .use(requestIdPlugin)
     .use(createErrorPlugin(deps.logger))
     .use(healthController(deps.db))
-    .use(authController(txPlugin, sharedConfig))
-    .use(postController(txPlugin, sharedConfig));
+    .use(authController(txPlugin, { jwtSecret: deps.jwtSecret, ...sharedConfig }))
+    .use(postController(txPlugin, authGuardPlugin, sharedConfig));
 }
 
 export type App = ReturnType<typeof createApp>;

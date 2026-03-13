@@ -23,8 +23,10 @@ export function useUpdatePost(id: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: { title?: string; content?: string }) => {
-      const { data, error } = await api.posts({ id }).put(input);
+    mutationFn: async (
+      input: { title: string; content?: string } | { title?: string; content: string },
+    ) => {
+      const { data, error } = await api.posts({ id }).patch(input);
       if (error) throw error;
       return data;
     },

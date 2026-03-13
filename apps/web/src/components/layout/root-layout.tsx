@@ -11,7 +11,10 @@ export function RootLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
-        <nav className="container mx-auto flex h-14 items-center justify-between px-4">
+        <nav
+          aria-label="Main navigation"
+          className="container mx-auto flex h-14 items-center justify-between px-4"
+        >
           <div className="flex items-center gap-6">
             <Link to="/" className="font-bold text-lg">
               bunmplate
@@ -24,7 +27,7 @@ export function RootLayout({ children }: { children: ReactNode }) {
             {isAuthenticated ? (
               <>
                 <span className="text-sm text-muted-foreground">{user?.email}</span>
-                <button type="button" onClick={logout}>
+                <button type="button" aria-label="Logout" onClick={logout}>
                   Logout
                 </button>
               </>

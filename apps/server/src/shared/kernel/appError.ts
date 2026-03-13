@@ -4,6 +4,7 @@ export type ErrorCode =
   | "CONFLICT"
   | "UNAUTHORIZED"
   | "FORBIDDEN"
+  | "TOO_MANY_REQUESTS"
   | "INTERNAL_ERROR";
 
 export class AppError extends Error {
@@ -37,6 +38,10 @@ export class AppError extends Error {
     return new AppError("FORBIDDEN", message);
   }
 
+  static tooManyRequests(message: string): AppError {
+    return new AppError("TOO_MANY_REQUESTS", message);
+  }
+
   static internal(message: string): AppError {
     return new AppError("INTERNAL_ERROR", message);
   }
@@ -48,6 +53,7 @@ export class AppError extends Error {
       CONFLICT: 409,
       UNAUTHORIZED: 401,
       FORBIDDEN: 403,
+      TOO_MANY_REQUESTS: 429,
       INTERNAL_ERROR: 500,
     };
     return map[this.code];

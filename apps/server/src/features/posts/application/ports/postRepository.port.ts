@@ -14,6 +14,6 @@ export interface IPostRepository {
   findById(id: string): Promise<Post | null>;
   list(query: PostListQuery): Promise<PostListResult>;
   create(post: Post): Promise<void>;
-  update(id: string, data: Partial<Pick<Post, "title" | "content" | "updatedAt">>): Promise<void>;
+  update(post: Post): Promise<void>;
   delete(id: string): Promise<void>;
 }

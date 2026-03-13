@@ -1,9 +1,9 @@
 import type { IDateProvider } from "@server/shared/application/dateProvider.port.ts";
 import type { IIdGenerator } from "@server/shared/application/idGenerator.port.ts";
-import { unwrap } from "@server/shared/kernel/result.ts";
-import type { Post } from "../../domain/entities/post.ts";
-import { createTitle } from "../../domain/valueObjects/title.ts";
-import type { CreatePostDto, PostResponseDto } from "../dtos.ts";
+import type { AppError } from "@server/shared/kernel/appError.ts";
+import { ok, type Result } from "@server/shared/kernel/result.ts";
+import { Post } from "../../domain/entities/post.ts";
+import type { PostResponseDto } from "../dtos.ts";
 import { toPostResponse } from "../dtos.ts";
 import type { IPostRepository } from "../ports/postRepository.port.ts";
 
@@ -14,22 +14,19 @@ interface Deps {
 }
 
 export async function createPost(
-  dto: CreatePostDto,
+  dto: { title: string; content: string },
   authorId: string,
   deps: Deps,
-): Promise<PostResponseDto> {
-  const title = unwrap(createTitle(dto.title));
-
-  const now = deps.dateProvider.now();
-  const post: Post = {
+): Promise<Result<PostResponseDto, AppError>> {
+  const result = Post({
     id: deps.idGenerator.generate(),
     authorId,
-    title,
+    title: dto.title,
     content: dto.content,
-    createdAt: now,
-    updatedAt: now,
-  };
+    now: deps.dateProvider.now(),
+  });
+  if (!result.ok) return result;
 
-  await deps.postRepository.create(post);
-  return toPostResponse(post);
+  await deps.postRepository.create(result.value);
+  return ok(toPostResponse(result.value));
 }

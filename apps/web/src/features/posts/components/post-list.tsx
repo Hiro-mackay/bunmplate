@@ -9,19 +9,21 @@ export function PostList() {
   if (!data?.data.length) return <p className="text-muted-foreground">No posts yet.</p>;
 
   return (
-    <div className="flex flex-col gap-4">
+    <ul aria-label="Posts" className="flex flex-col gap-4">
       {data.data.map((post) => (
-        <Link key={post.id} to="/posts/$postId" params={{ postId: post.id }}>
-          <div className="rounded-xl border bg-card text-card-foreground shadow transition-colors hover:bg-accent">
-            <div className="flex flex-col space-y-1.5 p-6">
-              <div className="font-semibold leading-none tracking-tight">{post.title}</div>
+        <li key={post.id}>
+          <Link to="/posts/$postId" params={{ postId: post.id }}>
+            <div className="rounded-xl border bg-card text-card-foreground shadow transition-colors hover:bg-accent">
+              <div className="flex flex-col space-y-1.5 p-6">
+                <div className="font-semibold leading-none tracking-tight">{post.title}</div>
+              </div>
+              <div className="p-6 pt-0">
+                <p className="line-clamp-2 text-muted-foreground">{post.content}</p>
+              </div>
             </div>
-            <div className="p-6 pt-0">
-              <p className="line-clamp-2 text-muted-foreground">{post.content}</p>
-            </div>
-          </div>
-        </Link>
+          </Link>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

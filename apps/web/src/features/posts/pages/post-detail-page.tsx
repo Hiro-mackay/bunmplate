@@ -30,6 +30,7 @@ export function PostDetailPage() {
             <div className="mt-6 flex gap-2">
               <button
                 type="button"
+                aria-label="Delete post"
                 onClick={() => deletePost.mutate(postId)}
                 disabled={deletePost.isPending}
               >

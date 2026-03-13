@@ -13,5 +13,8 @@ export const posts = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [index("posts_author_id_idx").on(table.authorId)],
+  (table) => [
+    index("posts_author_id_idx").on(table.authorId),
+    index("posts_created_at_idx").on(table.createdAt),
+  ],
 );
