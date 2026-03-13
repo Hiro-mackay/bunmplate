@@ -1,0 +1,6 @@
+{
+  "extends": "@bunmplate/tsconfig/base.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  }
+}

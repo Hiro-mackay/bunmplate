@@ -1,0 +1,28 @@
+{
+  "name": "@bunmplate/server",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/main.ts",
+    "./type": "./src/bootstrap/app.ts"
+  },
+  "scripts": {
+    "dev": "bun run --hot src/main.ts",
+    "start": "bun run src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bunmplate/drizzle": "workspace:*",
+    "@elysiajs/cors": "^1.2.0",
+    "drizzle-orm": "^0.44.0",
+    "elysia": "^1.2.0",
+    "jose": "^6.0.0",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@bunmplate/tsconfig": "workspace:*",
+    "@types/bun": "latest",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "radix-vega",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@bunmplate/ui/components",
+    "utils": "@bunmplate/ui/lib/utils",
+    "hooks": "@bunmplate/ui/hooks",
+    "ui": "@bunmplate/ui/components"
+  },
+  "iconLibrary": "tabler",
+  "rtl": false,
+  "menuColor": "default",
+  "menuAccent": "subtle"
+}

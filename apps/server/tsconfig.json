@@ -1,0 +1,11 @@
+{
+  "extends": "@bunmplate/tsconfig/base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@server/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "bunmplate",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently --names server,web --prefix-colors blue,green \"bun run --filter @bunmplate/server dev\" \"bun run --filter @bunmplate/web dev\"",
+    "typecheck": "bun run --filter '*' typecheck",
+    "lint": "bunx @biomejs/biome lint .",
+    "format": "bunx @biomejs/biome format --write .",
+    "check": "bunx @biomejs/biome check --write .",
+    "db:generate": "bun run --filter @bunmplate/drizzle generate",
+    "db:push": "bun run --filter @bunmplate/drizzle push",
+    "db:studio": "bun run --filter @bunmplate/drizzle studio"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "@types/bun": "latest",
+    "concurrently": "latest",
+    "lefthook": "latest",
+    "typescript": "^5"
+  }
+}

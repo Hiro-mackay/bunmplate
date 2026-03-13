@@ -1,0 +1,28 @@
+{
+  "name": "@bunmplate/drizzle",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/client.ts",
+    "./schemas": "./src/schemas/index.ts",
+    "./schemas/*": "./src/schemas/*/index.ts"
+  },
+  "scripts": {
+    "generate": "bunx drizzle-kit generate",
+    "migrate": "bunx drizzle-kit migrate",
+    "push": "bunx drizzle-kit push",
+    "studio": "bunx drizzle-kit studio",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
+    "drizzle-orm": "^0.44.0",
+    "postgres": "^3.4.5",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@bunmplate/tsconfig": "workspace:*",
+    "drizzle-kit": "^0.30.0",
+    "typescript": "^5"
+  }
+}

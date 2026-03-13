@@ -1,0 +1,11 @@
+{
+  "extends": "@bunmplate/tsconfig/react.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@bunmplate/ui/*": ["../../packages/ui/src/*"],
+      "@server/*": ["../server/src/*"]
+    }
+  },
+  "include": ["src"]
+}
